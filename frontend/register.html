@@ -1,0 +1,351 @@
+<!--
+ * @file register.html
+ * @description Página de cadastro do frontend. Permite que novos usuários criem uma conta.
+ * 
+ * @author Manus AI
+ * @date Oct 01, 2025
+ -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro - Sistema Full-Stack</title>
+    
+    <!-- CSS Principal: Contém estilos globais e de layout para a aplicação. -->
+    <link rel="stylesheet" href="css/style.css">
+    
+    <!-- Favicon: Ícone exibido na aba do navegador. -->
+    <link rel="icon" type="image/x-icon" href="images/favicon.ico">
+    
+    <!-- Meta tags para SEO e descrição da página. -->
+    <meta name="description" content="Cadastre-se no sistema full-stack com autenticação segura">
+    <meta name="keywords" content="cadastro, registro, autenticação, sistema">
+    <meta name="author" content="Desenvolvedor Full-Stack">
+</head>
+<body>
+    <!-- Container principal da página: Envolve todo o conteúdo da aplicação. -->
+    <div class="container">
+        <!-- Cabeçalho da aplicação: Contém o logo e o título do sistema. -->
+        <header class="header">
+            <div class="logo">
+                <h1>🚀 Sistema Full-Stack</h1>
+                <p>Projeto didático completo</p>
+            </div>
+            <!-- Botão para voltar à página de login. -->
+            <nav class="header-nav">
+                <a href="index.html" class="btn btn-outline">
+                    ← Voltar ao Login
+                </a>
+            </nav>
+        </header>
+
+        <!-- Conteúdo principal: Área onde o conteúdo dinâmico da página é exibido. -->
+        <main class="main-content">
+            <!-- Card de cadastro: Contém o formulário de cadastro. -->
+            <div class="auth-card">
+                <!-- Título do formulário de autenticação. -->
+                <div class="auth-header">
+                    <h2>Criar nova conta</h2>
+                    <p>Preencha os dados para se cadastrar</p>
+                </div>
+
+                <!-- Área de mensagens: Exibe mensagens de sucesso ou erro para o usuário. -->
+                <div id="message-area" class="message-area hidden">
+                    <div id="message-content" class="message-content"></div>
+                </div>
+
+                <!-- Formulário de cadastro: Coleta as informações para criar uma nova conta. -->
+                <form id="register-form" class="auth-form">
+                    <!-- Campo de nome completo. -->
+                    <div class="form-group">
+                        <label for="name" class="form-label">
+                            👤 Nome Completo
+                        </label>
+                        <input 
+                            type="text" 
+                            id="name" 
+                            name="name" 
+                            class="form-input" 
+                            placeholder="Seu nome completo"
+                            required
+                            autocomplete="name"
+                            minlength="2"
+                            maxlength="100"
+                        >
+                        <!-- Exibe mensagens de erro específicas para o campo de nome. -->
+                        <div class="field-error" id="name-error"></div>
+                        <div class="field-help">
+                            Mínimo 2 caracteres, apenas letras e espaços
+                        </div>
+                    </div>
+
+                    <!-- Campo de email. -->
+                    <div class="form-group">
+                        <label for="email" class="form-label">
+                            📧 Email
+                        </label>
+                        <input 
+                            type="email" 
+                            id="email" 
+                            name="email" 
+                            class="form-input" 
+                            placeholder="seu@email.com"
+                            required
+                            autocomplete="email"
+                        >
+                        <!-- Exibe mensagens de erro específicas para o campo de email. -->
+                        <div class="field-error" id="email-error"></div>
+                        <div class="field-help">
+                            Será usado para login e comunicações
+                        </div>
+                    </div>
+
+                    <!-- Campo de senha. -->
+                    <div class="form-group">
+                        <label for="password" class="form-label">
+                            🔒 Senha
+                        </label>
+                        <!-- Container para o campo de senha e o botão de alternar visibilidade. -->
+                        <div class="password-input-container">
+                            <input 
+                                type="password" 
+                                id="password" 
+                                name="password" 
+                                class="form-input" 
+                                placeholder="Crie uma senha forte"
+                                required
+                                autocomplete="new-password"
+                                minlength="6"
+                            >
+                            <!-- Botão para mostrar/ocultar a senha. -->
+                            <button 
+                                type="button" 
+                                id="toggle-password" 
+                                class="password-toggle"
+                                aria-label="Mostrar/ocultar senha"
+                            >
+                                👁️
+                            </button>
+                        </div>
+                        <!-- Exibe mensagens de erro específicas para o campo de senha. -->
+                        <div class="field-error" id="password-error"></div>
+                        
+                        <!-- Indicador de força da senha. -->
+                        <div class="password-strength">
+                            <div class="strength-bar">
+                                <div id="strength-fill" class="strength-fill"></div>
+                            </div>
+                            <div id="strength-text" class="strength-text">
+                                Digite uma senha
+                            </div>
+                        </div>
+                        
+                        <div class="field-help">
+                            Mínimo 6 caracteres com letras maiúsculas, minúsculas e números
+                        </div>
+                    </div>
+
+                    <!-- Campo de confirmação de senha. -->
+                    <div class="form-group">
+                        <label for="confirm-password" class="form-label">
+                            🔒 Confirmar Senha
+                        </label>
+                        <!-- Container para o campo de confirmação de senha e o botão de alternar visibilidade. -->
+                        <div class="password-input-container">
+                            <input 
+                                type="password" 
+                                id="confirm-password" 
+                                name="confirmPassword" 
+                                class="form-input" 
+                                placeholder="Digite a senha novamente"
+                                required
+                                autocomplete="new-password"
+                            >
+                            <!-- Botão para mostrar/ocultar a confirmação de senha. -->
+                            <button 
+                                type="button" 
+                                id="toggle-confirm-password" 
+                                class="password-toggle"
+                                aria-label="Mostrar/ocultar confirmação de senha"
+                            >
+                                👁️
+                            </button>
+                        </div>
+                        <!-- Exibe mensagens de erro específicas para o campo de confirmação de senha. -->
+                        <div class="field-error" id="confirm-password-error"></div>
+                        <div id="password-match" class="field-help"></div>
+                    </div>
+
+                    <!-- Checkbox para aceitar termos e condições. -->
+                    <div class="form-group">
+                        <label class="checkbox-container">
+                            <input type="checkbox" id="terms" name="terms" required>
+                            <span class="checkmark"></span>
+                            Eu aceito os 
+                            <a href="#" onclick="showTerms()" class="auth-link">
+                                termos de uso
+                            </a> 
+                            e 
+                            <a href="#" onclick="showPrivacy()" class="auth-link">
+                                política de privacidade
+                            </a>
+                        </label>
+                        <!-- Exibe mensagens de erro se os termos não forem aceitos. -->
+                        <div class="field-error" id="terms-error"></div>
+                    </div>
+
+                    <!-- Checkbox opcional para receber newsletter. -->
+                    <div class="form-group">
+                        <label class="checkbox-container">
+                            <input type="checkbox" id="newsletter" name="newsletter">
+                            <span class="checkmark"></span>
+                            Quero receber novidades por email
+                        </label>
+                    </div>
+
+                    <!-- Botão de cadastro: Aciona a submissão do formulário. -->
+                    <button type="submit" id="register-btn" class="btn btn-primary">
+                        <span class="btn-text">Criar Conta</span>
+                        <!-- Indicador de carregamento para o botão de cadastro. -->
+                        <span class="btn-loading hidden">
+                            <span class="spinner"></span>
+                            Criando conta...
+                        </span>
+                    </button>
+                </form>
+
+                <!-- Divisor visual entre o cadastro tradicional e o cadastro social. -->
+                <div class="divider">
+                    <span>ou</span>
+                </div>
+
+                <!-- Botão de cadastro com Google: Inicia o fluxo de autenticação Google OAuth. -->
+                <button id="google-register-btn" class="btn btn-google">
+                    <img src="https://developers.google.com/identity/images/g-logo.png" alt="Google" class="google-icon">
+                    Cadastrar com Google
+                </button>
+
+                <!-- Link para a página de login, caso o usuário já tenha uma conta. -->
+                <div class="auth-footer">
+                    <p>Já tem uma conta? 
+                        <a href="index.html" class="auth-link">Faça login aqui</a>
+                    </p>
+                </div>
+            </div>
+
+            <!-- Seção de vantagens do cadastro: Destaca os benefícios de ter uma conta. -->
+            <div class="info-section">
+                <h3>🎁 Vantagens de ter uma conta</h3>
+                <div class="benefits-list">
+                    <!-- Benefício: Acesso Completo -->
+                    <div class="benefit-item">
+                        <span class="benefit-icon">✅</span>
+                        <div>
+                            <h4>Acesso Completo</h4>
+                            <p>Acesse todas as funcionalidades do sistema</p>
+                        </div>
+                    </div>
+                    <!-- Benefício: Dados Salvos -->
+                    <div class="benefit-item">
+                        <span class="benefit-icon">💾</span>
+                        <div>
+                            <h4>Dados Salvos</h4>
+                            <p>Suas informações ficam seguras e sincronizadas</p>
+                        </div>
+                    </div>
+                    <!-- Benefício: Notificações -->
+                    <div class="benefit-item">
+                        <span class="benefit-icon">🔔</span>
+                        <div>
+                            <h4>Notificações</h4>
+                            <p>Receba atualizações importantes por email</p>
+                        </div>
+                    </div>
+                    <!-- Benefício: Segurança -->
+                    <div class="benefit-item">
+                        <span class="benefit-icon">🛡️</span>
+                        <div>
+                            <h4>Segurança</h4>
+                            <p>Autenticação segura com criptografia</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Rodapé da página: Contém informações de copyright e descrição do projeto. -->
+        <footer class="footer">
+            <p>&copy; 2024 Sistema Full-Stack - Projeto Didático</p>
+            <p>Seus dados são protegidos e nunca compartilhados</p>
+        </footer>
+    </div>
+
+    <!-- Modal de Termos de Uso: Exibe os termos de uso do sistema. -->
+    <div id="terms-modal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Termos de Uso</h3>
+                <button class="modal-close" onclick="closeTerms()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <h4>1. Aceitação dos Termos</h4>
+                <p>Este é um projeto didático para demonstração de funcionalidades full-stack.</p>
+                
+                <h4>2. Uso do Sistema</h4>
+                <p>O sistema é destinado apenas para fins educacionais e de demonstração.</p>
+                
+                <h4>3. Dados Pessoais</h4>
+                <p>Os dados são armazenados localmente apenas para demonstração. Em produção, implemente políticas adequadas de privacidade.</p>
+                
+                <h4>4. Responsabilidades</h4>
+                <p>O usuário é responsável por manter suas credenciais seguras.</p>
+                
+                <h4>5. Modificações</h4>
+                <p>Estes termos podem ser atualizados a qualquer momento.</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeTerms()">
+                    Fechar
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Política de Privacidade: Exibe a política de privacidade do sistema. -->
+    <div id="privacy-modal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Política de Privacidade</h3>
+                <button class="modal-close" onclick="closePrivacy()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <h4>Coleta de Dados</h4>
+                <p>Coletamos apenas os dados necessários para o funcionamento do sistema: nome, email e senha criptografada.</p>
+                
+                <h4>Uso dos Dados</h4>
+                <p>Os dados são usados exclusivamente para autenticação e funcionalidades do sistema.</p>
+                
+                <h4>Compartilhamento</h4>
+                <p>Não compartilhamos dados pessoais com terceiros.</p>
+                
+                <h4>Segurança</h4>
+                <p>Utilizamos criptografia e boas práticas de segurança para proteger seus dados.</p>
+                
+                <h4>Seus Direitos</h4>
+                <p>Você pode solicitar acesso, correção ou exclusão dos seus dados a qualquer momento.</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closePrivacy()">
+                    Fechar
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts JavaScript: Carregados no final do body para otimizar o carregamento da página. -->
+    <script src="js/utils.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/register.js"></script>
+</body>
+</html>

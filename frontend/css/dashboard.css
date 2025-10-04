@@ -1,0 +1,843 @@
+/**
+ * @file dashboard.css
+ * @description Este arquivo contém os estilos CSS específicos para o layout e componentes do dashboard.
+ * 
+ * @author Manus AI
+ * @date Oct 01, 2025
+ */
+
+/* ===================================================================
+   1. LAYOUT PRINCIPAL DO DASHBOARD
+   =================================================================== */
+
+/**
+ * Container principal do dashboard.
+ * Define o layout flexível para a sidebar e o conteúdo principal.
+ */
+.dashboard-container {
+    display: flex;
+    min-height: 100vh;
+    background: var(--bg-secondary);
+}
+
+/**
+ * Sidebar de navegação.
+ * Menu lateral fixo que contém os links de navegação do dashboard.
+ */
+.sidebar {
+    width: 280px;
+    background: var(--bg-primary);
+    border-right: 1px solid var(--border-color);
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    height: 100vh;
+    left: 0;
+    top: 0;
+    z-index: var(--z-fixed);
+    transition: transform var(--transition-normal); /* Transição para recolher/expandir a sidebar. */
+}
+
+/**
+ * Estilo para a sidebar quando recolhida.
+ */
+.sidebar.collapsed {
+    transform: translateX(-100%);
+}
+
+/**
+ * Cabeçalho da sidebar.
+ * Contém o título do dashboard e o botão de toggle (em telas menores).
+ */
+.sidebar-header {
+    padding: var(--spacing-xl);
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.sidebar-header h2 {
+    margin: 0;
+    font-size: var(--font-xl);
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/**
+ * Botão de toggle da sidebar (visível apenas em telas menores).
+ */
+.sidebar-toggle {
+    display: none; /* Oculto por padrão, exibido via media query. */
+    background: none;
+    border: none;
+    font-size: var(--font-xl);
+    cursor: pointer;
+    padding: var(--spacing-xs);
+    border-radius: var(--radius-sm);
+    transition: background var(--transition-fast);
+}
+
+.sidebar-toggle:hover {
+    background: var(--bg-secondary);
+}
+
+/**
+ * Navegação principal da sidebar.
+ */
+.sidebar-nav {
+    flex: 1;
+    padding: var(--spacing-lg) 0;
+}
+
+.nav-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.nav-item {
+    margin: 0;
+}
+
+.nav-link {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+    padding: var(--spacing-md) var(--spacing-xl);
+    color: var(--text-secondary);
+    text-decoration: none;
+    transition: all var(--transition-fast);
+    border-left: 3px solid transparent;
+}
+
+.nav-link:hover {
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+    text-decoration: none;
+}
+
+.nav-link.active {
+    background: var(--bg-secondary);
+    color: var(--primary-color);
+    border-left-color: var(--primary-color);
+    font-weight: 500;
+}
+
+.nav-icon {
+    font-size: var(--font-lg);
+    width: 24px;
+    text-align: center;
+}
+
+.nav-text {
+    font-size: var(--font-md);
+}
+
+/**
+ * Rodapé da sidebar.
+ * Contém o botão de logout.
+ */
+.sidebar-footer {
+    padding: var(--spacing-lg) var(--spacing-xl);
+    border-top: 1px solid var(--border-color);
+}
+
+/**
+ * Conteúdo principal do dashboard.
+ * Ocupa o espaço restante ao lado da sidebar.
+ */
+.main-dashboard {
+    flex: 1;
+    margin-left: 280px; /* Compensa a largura da sidebar. */
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    transition: margin-left var(--transition-normal);
+}
+
+/**
+ * Ajusta a margem do conteúdo principal quando a sidebar está recolhida.
+ */
+.sidebar.collapsed + .main-dashboard {
+    margin-left: 0;
+}
+
+/* ===================================================================
+   2. CABEÇALHO DO DASHBOARD
+   =================================================================== */
+
+/**
+ * Cabeçalho do dashboard.
+ * Contém o título da página atual e as informações do usuário logado.
+ */
+.dashboard-header {
+    background: var(--bg-primary);
+    border-bottom: 1px solid var(--border-color);
+    padding: var(--spacing-lg) var(--spacing-xl);
+    position: sticky;
+    top: 0;
+    z-index: var(--z-sticky);
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#page-title {
+    margin: 0;
+    font-size: var(--font-2xl);
+    color: var(--text-primary);
+}
+
+/**
+ * Informações do usuário no cabeçalho.
+ * Exibe avatar, nome e email do usuário.
+ */
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+}
+
+.user-avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: var(--radius-full);
+    border: 2px solid var(--border-color);
+    object-fit: cover;
+}
+
+.user-details {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.user-name {
+    font-weight: 500;
+    color: var(--text-primary);
+    font-size: var(--font-md);
+}
+
+.user-email {
+    font-size: var(--font-sm);
+    color: var(--text-muted);
+}
+
+/* ===================================================================
+   3. SEÇÕES DO DASHBOARD
+   =================================================================== */
+
+/**
+ * Estilos para as diferentes seções do dashboard.
+ * Ocultas por padrão, exibidas via JavaScript.
+ */
+.dashboard-section {
+    display: none;
+    padding: var(--spacing-xl);
+}
+
+.dashboard-section.active {
+    display: block;
+}
+
+.section-content {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/**
+ * Área de mensagens globais do dashboard.
+ */
+#global-message-area {
+    margin: var(--spacing-lg) var(--spacing-xl) 0;
+}
+
+/* ===================================================================
+   4. COMPONENTES - CARDS DE ESTATÍSTICAS
+   =================================================================== */
+
+/**
+ * Grid para organizar os cards de estatísticas.
+ */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: var(--spacing-lg);
+    margin: var(--spacing-xl) 0;
+}
+
+/**
+ * Card individual de estatística.
+ * Exibe um ícone, título, descrição e status.
+ */
+.stat-card {
+    background: var(--bg-primary);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-xl);
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow-sm);
+    transition: all var(--transition-fast);
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-lg);
+}
+
+.stat-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.stat-icon {
+    font-size: var(--font-3xl);
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--bg-secondary);
+    border-radius: var(--radius-lg);
+    flex-shrink: 0;
+}
+
+.stat-content h3 {
+    margin: 0 0 var(--spacing-xs) 0;
+    font-size: var(--font-lg);
+    color: var(--text-primary);
+}
+
+.stat-content p {
+    margin: 0 0 var(--spacing-sm) 0;
+    color: var(--text-muted);
+    font-size: var(--font-sm);
+}
+
+/**
+ * Estilos para o status dentro do card (sucesso, erro, warning).
+ */
+.stat-status {
+    font-size: var(--font-xs);
+    font-weight: 500;
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border-radius: var(--radius-sm);
+    display: inline-block;
+}
+
+.stat-status.success {
+    background: var(--success-light);
+    color: var(--success-color);
+}
+
+.stat-status.error {
+    background: var(--error-light);
+    color: var(--error-color);
+}
+
+.stat-status.warning {
+    background: var(--warning-light);
+    color: var(--warning-color);
+}
+
+/* ===================================================================
+   5. COMPONENTES - FUNCIONALIDADES (OVERVIEW)
+   =================================================================== */
+
+/**
+ * Seção de visão geral das funcionalidades.
+ */
+.features-overview {
+    background: var(--bg-primary);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-xl);
+    border: 1px solid var(--border-color);
+    margin-top: var(--spacing-xl);
+}
+
+.features-overview h3 {
+    margin-bottom: var(--spacing-lg);
+    text-align: center;
+}
+
+/**
+ * Lista de cards de funcionalidades.
+ */
+.features-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: var(--spacing-lg);
+}
+
+.feature-card {
+    background: var(--bg-secondary);
+    border-radius: var(--radius-md);
+    padding: var(--spacing-lg);
+    border: 1px solid var(--border-color);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.feature-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+    border-color: var(--primary-color);
+}
+
+.feature-card h4 {
+    margin: 0 0 var(--spacing-sm) 0;
+    color: var(--text-primary);
+}
+
+.feature-card p {
+    margin: 0;
+    color: var(--text-muted);
+    font-size: var(--font-sm);
+}
+
+/* ===================================================================
+   6. COMPONENTES - PERFIL DO USUÁRIO
+   =================================================================== */
+
+/**
+ * Container da seção de perfil.
+ * Organiza as informações e ações do perfil em um layout de grid.
+ */
+.profile-container {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: var(--spacing-xl);
+    margin-top: var(--spacing-xl);
+}
+
+/**
+ * Bloco de informações do perfil.
+ */
+.profile-info {
+    background: var(--bg-primary);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-xl);
+    border: 1px solid var(--border-color);
+}
+
+/**
+ * Seção de avatar e nome/email do usuário.
+ */
+.profile-avatar-section {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-lg);
+    margin-bottom: var(--spacing-xl);
+    padding-bottom: var(--spacing-xl);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.profile-avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: var(--radius-full);
+    border: 3px solid var(--border-color);
+    object-fit: cover;
+}
+
+.avatar-info h3 {
+    margin: 0 0 var(--spacing-xs) 0;
+    font-size: var(--font-xl);
+}
+
+.avatar-info p {
+    margin: 0 0 var(--spacing-sm) 0;
+    color: var(--text-muted);
+}
+
+.auth-provider {
+    font-size: var(--font-xs);
+    padding: var(--spacing-xs) var(--spacing-sm);
+    background: var(--bg-secondary);
+    border-radius: var(--radius-sm);
+    color: var(--text-muted);
+    font-weight: 500;
+}
+
+/**
+ * Detalhes adicionais do perfil (ID, datas, etc.).
+ */
+.profile-details {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+}
+
+.detail-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--spacing-sm) 0;
+    border-bottom: 1px solid var(--border-light);
+}
+
+.detail-item:last-child {
+    border-bottom: none;
+}
+
+.detail-item strong {
+    color: var(--text-primary);
+    font-size: var(--font-sm);
+}
+
+.detail-item span {
+    color: var(--text-muted);
+    font-size: var(--font-sm);
+    font-family: 'Courier New', monospace;
+}
+
+/**
+ * Bloco de ações do perfil (botões de atualização, download, exclusão).
+ */
+.profile-actions {
+    background: var(--bg-primary);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-xl);
+    border: 1px solid var(--border-color);
+    height: fit-content;
+}
+
+.profile-actions h4 {
+    margin-bottom: var(--spacing-lg);
+}
+
+.profile-actions .btn {
+    width: 100%;
+    margin-bottom: var(--spacing-md);
+}
+
+.profile-actions .btn:last-child {
+    margin-bottom: 0;
+}
+
+/* ===================================================================
+   7. COMPONENTES - FORMULÁRIO DE EMAIL
+   =================================================================== */
+
+/**
+ * Estilos para o formulário de envio de email.
+ */
+#email-section .dashboard-form {
+    max-width: 700px;
+    margin-top: var(--spacing-xl);
+}
+
+#email-section .form-actions {
+    display: flex;
+    gap: var(--spacing-md);
+    justify-content: flex-end;
+    margin-top: var(--spacing-lg);
+}
+
+#email-section .form-actions .btn {
+    width: auto;
+}
+
+/* ===================================================================
+   8. COMPONENTES - PAGAMENTOS (STRIPE)
+   =================================================================== */
+
+/**
+ * Seção de seleção de produtos para pagamento.
+ */
+.payment-products {
+    margin-top: var(--spacing-xl);
+}
+
+.payment-products h3 {
+    margin-bottom: var(--spacing-lg);
+}
+
+.products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: var(--spacing-lg);
+}
+
+.product-card {
+    background: var(--bg-primary);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-xl);
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow-sm);
+    text-align: center;
+    transition: all var(--transition-fast);
+    cursor: pointer;
+}
+
+.product-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+    border-color: var(--primary-color);
+}
+
+.product-card h4 {
+    margin: 0 0 var(--spacing-sm) 0;
+    font-size: var(--font-xl);
+    color: var(--primary-color);
+}
+
+.product-card .product-price {
+    font-size: var(--font-2xl);
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: var(--spacing-md);
+}
+
+.product-card p {
+    font-size: var(--font-sm);
+    color: var(--text-muted);
+    margin-bottom: var(--spacing-lg);
+}
+
+.product-card .select-product-btn {
+    width: 100%;
+}
+
+/**
+ * Container do formulário de pagamento (Stripe Elements).
+ */
+.payment-form-container {
+    background: var(--bg-primary);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-xl);
+    border: 1px solid var(--border-color);
+    margin-top: var(--spacing-xl);
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.payment-form-container h3 {
+    margin-bottom: var(--spacing-lg);
+}
+
+.payment-summary {
+    background: var(--bg-secondary);
+    border-radius: var(--radius-md);
+    padding: var(--spacing-md);
+    margin-bottom: var(--spacing-lg);
+    border: 1px solid var(--border-light);
+}
+
+.payment-summary h4 {
+    margin: 0 0 var(--spacing-sm) 0;
+    font-size: var(--font-lg);
+    color: var(--text-primary);
+}
+
+.summary-item {
+    display: flex;
+    justify-content: space-between;
+    padding: var(--spacing-xs) 0;
+    font-size: var(--font-md);
+    color: var(--text-secondary);
+}
+
+.summary-item span:first-child {
+    font-weight: 500;
+}
+
+.stripe-element {
+    background-color: var(--bg-primary);
+    padding: var(--spacing-md);
+    border: 2px solid var(--border-color);
+    border-radius: var(--radius-md);
+    transition: all var(--transition-fast);
+}
+
+.stripe-element--focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+#payment-section .form-actions {
+    display: flex;
+    gap: var(--spacing-md);
+    justify-content: flex-end;
+    margin-top: var(--spacing-lg);
+}
+
+#payment-section .form-actions .btn {
+    width: auto;
+}
+
+/* ===================================================================
+   9. COMPONENTES - FORMULÁRIO DE CONTATO
+   =================================================================== */
+
+/**
+ * Estilos para o formulário de contato.
+ */
+#contact-section .dashboard-form {
+    max-width: 700px;
+    margin-top: var(--spacing-xl);
+}
+
+#contact-section .form-actions {
+    display: flex;
+    gap: var(--spacing-md);
+    justify-content: flex-end;
+    margin-top: var(--spacing-lg);
+}
+
+#contact-section .form-actions .btn {
+    width: auto;
+}
+
+/* ===================================================================
+   10. RESPONSIVIDADE DO DASHBOARD
+   =================================================================== */
+
+/**
+ * Media queries para adaptar o layout do dashboard a diferentes tamanhos de tela.
+ */
+@media (max-width: 1024px) {
+    .sidebar {
+        width: 220px;
+    }
+
+    .main-dashboard {
+        margin-left: 220px;
+    }
+
+    .sidebar-header h2 {
+        font-size: var(--font-lg);
+    }
+
+    .nav-link {
+        padding: var(--spacing-md) var(--spacing-lg);
+    }
+
+    .profile-container {
+        grid-template-columns: 1fr; /* Empilha as seções de perfil em telas menores. */
+    }
+
+    .profile-actions {
+        margin-top: var(--spacing-lg);
+    }
+}
+
+@media (max-width: 768px) {
+    .sidebar {
+        transform: translateX(-100%); /* Oculta a sidebar por padrão em telas pequenas. */
+        position: fixed;
+        height: 100vh;
+        z-index: var(--z-modal);
+        box-shadow: var(--shadow-xl);
+    }
+
+    .sidebar.active {
+        transform: translateX(0); /* Exibe a sidebar quando ativada. */
+    }
+
+    .sidebar-toggle {
+        display: block; /* Exibe o botão de toggle da sidebar. */
+    }
+
+    .main-dashboard {
+        margin-left: 0; /* Remove a margem do conteúdo principal. */
+    }
+
+    .dashboard-header {
+        padding: var(--spacing-md) var(--spacing-lg);
+    }
+
+    #page-title {
+        font-size: var(--font-xl);
+    }
+
+    .user-info {
+        gap: var(--spacing-sm);
+    }
+
+    .user-avatar {
+        width: 40px;
+        height: 40px;
+    }
+
+    .user-name,
+    .user-email {
+        font-size: var(--font-sm);
+    }
+
+    .dashboard-section {
+        padding: var(--spacing-lg);
+    }
+
+    .stats-grid,
+    .products-grid,
+    .features-list {
+        grid-template-columns: 1fr; /* Empilha cards em telas menores. */
+    }
+
+    .stat-card {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .stat-icon {
+        margin-bottom: var(--spacing-sm);
+    }
+
+    .payment-form-container,
+    #email-section .dashboard-form,
+    #contact-section .dashboard-form {
+        padding: var(--spacing-lg);
+    }
+}
+
+@media (max-width: 480px) {
+    .sidebar-header {
+        padding: var(--spacing-md);
+    }
+
+    .sidebar-footer {
+        padding: var(--spacing-md);
+    }
+
+    .nav-link {
+        padding: var(--spacing-sm) var(--spacing-md);
+    }
+
+    .dashboard-header {
+        padding: var(--spacing-sm) var(--spacing-md);
+    }
+
+    .dashboard-section {
+        padding: var(--spacing-md);
+    }
+
+    .profile-avatar-section {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .profile-avatar {
+        margin-bottom: var(--spacing-sm);
+    }
+
+    .detail-item {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .detail-item span {
+        text-align: left;
+        width: 100%;
+    }
+
+    .payment-form-container,
+    #email-section .dashboard-form,
+    #contact-section .dashboard-form {
+        padding: var(--spacing-md);
+    }
+}

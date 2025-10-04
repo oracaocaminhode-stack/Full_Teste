@@ -1,0 +1,482 @@
+<!--
+ * @file dashboard.html
+ * @description Painel do usuário, acessível após o login. Exibe informações do usuário e permite o logout.
+ * 
+ * @author Manus AI
+ * @date Oct 01, 2025
+ -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Sistema Full-Stack</title>
+    
+    <!-- CSS Principal e do Dashboard: Estilos globais e específicos para o dashboard. -->
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    
+    <!-- Favicon: Ícone exibido na aba do navegador. -->
+    <link rel="icon" type="image/x-icon" href="images/favicon.ico">
+    
+    <!-- Stripe.js para pagamentos: Biblioteca oficial do Stripe para integração frontend. -->
+    <script src="https://js.stripe.com/v3/"></script>
+    
+    <!-- Meta tags para SEO e descrição da página. -->
+    <meta name="description" content="Dashboard do sistema full-stack com funcionalidades completas">
+    <meta name="keywords" content="dashboard, sistema, fullstack, pagamentos, email">
+    <meta name="author" content="Desenvolvedor Full-Stack">
+</head>
+<body>
+    <!-- Container principal da página: Envolve todo o conteúdo do dashboard. -->
+    <div class="dashboard-container">
+        <!-- Sidebar de navegação: Menu lateral para navegar entre as seções do dashboard. -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2>🚀 Dashboard</h2>
+                <!-- Botão para alternar a visibilidade da sidebar em telas menores. -->
+                <button id="sidebar-toggle" class="sidebar-toggle">
+                    ☰
+                </button>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <ul class="nav-list">
+                    <!-- Item de navegação: Visão Geral. -->
+                    <li class="nav-item">
+                        <a href="#overview" class="nav-link active" data-section="overview">
+                            <span class="nav-icon">📊</span>
+                            <span class="nav-text">Visão Geral</span>
+                        </a>
+                    </li>
+                    <!-- Item de navegação: Perfil do Usuário. -->
+                    <li class="nav-item">
+                        <a href="#profile" class="nav-link" data-section="profile">
+                            <span class="nav-icon">👤</span>
+                            <span class="nav-text">Perfil</span>
+                        </a>
+                    </li>
+                    <!-- Item de navegação: Enviar Email. -->
+                    <li class="nav-item">
+                        <a href="#email" class="nav-link" data-section="email">
+                            <span class="nav-icon">📧</span>
+                            <span class="nav-text">Enviar Email</span>
+                        </a>
+                    </li>
+                    <!-- Item de navegação: Pagamentos. -->
+                    <li class="nav-item">
+                        <a href="#payment" class="nav-link" data-section="payment">
+                            <span class="nav-icon">💳</span>
+                            <span class="nav-text">Pagamentos</span>
+                        </a>
+                    </li>
+                    <!-- Item de navegação: Contato. -->
+                    <li class="nav-item">
+                        <a href="#contact" class="nav-link" data-section="contact">
+                            <span class="nav-icon">📞</span>
+                            <span class="nav-text">Contato</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            
+            <!-- Rodapé da sidebar com botão de logout. -->
+            <div class="sidebar-footer">
+                <button id="logout-btn" class="btn btn-outline btn-small">
+                    🚪 Sair
+                </button>
+            </div>
+        </aside>
+
+        <!-- Conteúdo principal do dashboard: Exibe as diferentes seções. -->
+        <main class="main-dashboard">
+            <!-- Cabeçalho do dashboard: Título da página e informações do usuário logado. -->
+            <header class="dashboard-header">
+                <div class="header-content">
+                    <h1 id="page-title">Visão Geral</h1>
+                    <div class="user-info">
+                        <img id="user-avatar" src="" alt="Avatar" class="user-avatar">
+                        <div class="user-details">
+                            <span id="user-name" class="user-name">Carregando...</span>
+                            <span id="user-email" class="user-email">Carregando...</span>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Área de mensagens globais: Exibe mensagens de sucesso ou erro para o usuário. -->
+            <div id="global-message-area" class="message-area hidden">
+                <div id="global-message-content" class="message-content"></div>
+            </div>
+
+            <!-- Seção: Visão Geral - Conteúdo inicial do dashboard. -->
+            <section id="overview-section" class="dashboard-section active">
+                <div class="section-content">
+                    <h2>🎯 Bem-vindo ao Sistema Full-Stack!</h2>
+                    <p>Este é um projeto didático completo que demonstra como integrar frontend e backend.</p>
+                    
+                    <!-- Cards de estatísticas: Exibem o status das principais funcionalidades. -->
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon">🔐</div>
+                            <div class="stat-content">
+                                <h3>Autenticação</h3>
+                                <p>JWT + Google OAuth</p>
+                                <span class="stat-status success">✅ Ativo</span>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <div class="stat-icon">📧</div>
+                            <div class="stat-content">
+                                <h3>Sistema de Email</h3>
+                                <p>Nodemailer + Gmail</p>
+                                <span class="stat-status" id="email-status">⏳ Verificando...</span>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <div class="stat-icon">💳</div>
+                            <div class="stat-content">
+                                <h3>Pagamentos</h3>
+                                <p>Stripe Integration</p>
+                                <span class="stat-status" id="payment-status">⏳ Verificando...</span>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <div class="stat-icon">🛡️</div>
+                            <div class="stat-content">
+                                <h3>Segurança</h3>
+                                <p>Bcrypt + Rate Limiting</p>
+                                <span class="stat-status success">✅ Ativo</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Funcionalidades disponíveis: Links para as diferentes seções do dashboard. -->
+                    <div class="features-overview">
+                        <h3>🚀 Funcionalidades Disponíveis</h3>
+                        <div class="features-list">
+                            <div class="feature-card" onclick="showSection(\'profile\')">
+                                <h4>👤 Gerenciar Perfil</h4>
+                                <p>Visualize e edite suas informações pessoais</p>
+                            </div>
+                            <div class="feature-card" onclick="showSection(\'email\')">
+                                <h4>📧 Enviar Emails</h4>
+                                <p>Teste o sistema de envio de emails</p>
+                            </div>
+                            <div class="feature-card" onclick="showSection(\'payment\')">
+                                <h4>💳 Processar Pagamentos</h4>
+                                <p>Teste a integração com Stripe</p>
+                            </div>
+                            <div class="feature-card" onclick="showSection(\'contact\')">
+                                <h4>📞 Formulário de Contato</h4>
+                                <p>Envie mensagens através do sistema</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Seção: Perfil - Exibe e permite gerenciar as informações do usuário. -->
+            <section id="profile-section" class="dashboard-section">
+                <div class="section-content">
+                    <h2>👤 Meu Perfil</h2>
+                    
+                    <div class="profile-container">
+                        <!-- Informações básicas do perfil do usuário. -->
+                        <div class="profile-info">
+                            <div class="profile-avatar-section">
+                                <img id="profile-avatar" src="" alt="Avatar" class="profile-avatar">
+                                <div class="avatar-info">
+                                    <h3 id="profile-name">Carregando...</h3>
+                                    <p id="profile-email">Carregando...</p>
+                                    <span id="profile-provider" class="auth-provider">Carregando...</span>
+                                </div>
+                            </div>
+                            
+                            <!-- Detalhes adicionais do perfil. -->
+                            <div class="profile-details">
+                                <div class="detail-item">
+                                    <strong>ID do Usuário:</strong>
+                                    <span id="profile-id">Carregando...</span>
+                                </div>
+                                <div class="detail-item">
+                                    <strong>Data de Cadastro:</strong>
+                                    <span id="profile-created">Carregando...</span>
+                                </div>
+                                <div class="detail-item">
+                                    <strong>Última Atualização:</strong>
+                                    <span id="profile-updated">Carregando...</span>
+                                </div>
+                                <div class="detail-item">
+                                    <strong>Email Verificado:</strong>
+                                    <span id="profile-verified">Carregando...</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Ações que o usuário pode realizar no perfil. -->
+                        <div class="profile-actions">
+                            <h4>⚙️ Ações</h4>
+                            <button class="btn btn-primary" onclick="refreshProfile()">
+                                🔄 Atualizar Dados
+                            </button>
+                            <button class="btn btn-outline" onclick="downloadProfileData()">
+                                📥 Baixar Dados
+                            </button>
+                            <button class="btn btn-danger" onclick="confirmDeleteAccount()">
+                                🗑️ Excluir Conta
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Seção: Enviar Email - Formulário para testar o envio de e-mails. -->
+            <section id="email-section" class="dashboard-section">
+                <div class="section-content">
+                    <h2>📧 Enviar Email</h2>
+                    <p>Teste o sistema de envio de emails integrado com Gmail.</p>
+                    
+                    <form id="email-form" class="dashboard-form">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="email-to" class="form-label">Para (Email de Destino)</label>
+                                <input 
+                                    type="email" 
+                                    id="email-to" 
+                                    name="to" 
+                                    class="form-input"
+                                    placeholder="Deixe vazio para usar o padrão (lersc2405@gmail.com)"
+                                >
+                                <div class="field-help">
+                                    Se não preenchido, será enviado para o email configurado no servidor
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="email-subject" class="form-label">Assunto</label>
+                            <input 
+                                type="text" 
+                                id="email-subject" 
+                                name="subject" 
+                                class="form-input"
+                                placeholder="Assunto do email"
+                                required
+                                maxlength="200"
+                            >
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="email-message" class="form-label">Mensagem</label>
+                            <textarea 
+                                id="email-message" 
+                                name="message" 
+                                class="form-textarea"
+                                placeholder="Digite sua mensagem aqui..."
+                                required
+                                rows="6"
+                                maxlength="5000"
+                            ></textarea>
+                            <div class="field-help">
+                                <span id="message-counter">0</span>/5000 caracteres
+                            </div>
+                        </div>
+                        
+                        <div class="form-actions">
+                            <button type="submit" id="send-email-btn" class="btn btn-primary">
+                                <span class="btn-text">📤 Enviar Email</span>
+                                <span class="btn-loading hidden">
+                                    <span class="spinner"></span>
+                                    Enviando...
+                                </span>
+                            </button>
+                            <button type="button" class="btn btn-secondary" onclick="clearEmailForm()">
+                                🗑️ Limpar
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </section>
+
+            <!-- Seção: Pagamentos - Interface para testar a integração com Stripe. -->
+            <section id="payment-section" class="dashboard-section">
+                <div class="section-content">
+                    <h2>💳 Processar Pagamento</h2>
+                    <p>Teste a integração com Stripe para processamento de pagamentos.</p>
+                    
+                    <!-- Seleção de produto: Permite escolher um item para simular a compra. -->
+                    <div class="payment-products">
+                        <h3>Selecione um produto para teste:</h3>
+                        <div class="products-grid">
+                            <div class="product-card" data-product-id="premium-plan" data-product-name="Plano Premium" data-product-price="1000">
+                                <h4>💎 Plano Premium</h4>
+                                <p class="product-price">R$ 10,00</p>
+                                <p>Acesso completo a todos os recursos por um mês.</p>
+                                <button class="btn btn-primary select-product-btn">Selecionar</button>
+                            </div>
+                            <div class="product-card" data-product-id="extra-credits" data-product-name="Créditos Adicionais" data-product-price="500">
+                                <h4>✨ Créditos Adicionais</h4>
+                                <p class="product-price">R$ 5,00</p>
+                                <p>Pacote de créditos para funcionalidades extras.</p>
+                                <button class="btn btn-primary select-product-btn">Selecionar</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Formulário de pagamento Stripe: Exibido após a seleção de um produto. -->
+                    <div id="payment-form-container" class="payment-form-container hidden">
+                        <h3>Resumo do Pedido:</h3>
+                        <p>Produto: <span id="selected-product-name"></span></p>
+                        <p>Valor: <span id="selected-product-price"></span></p>
+                        
+                        <form id="payment-form" class="dashboard-form">
+                            <div class="form-group">
+                                <label for="card-element" class="form-label">Detalhes do Cartão</label>
+                                <!-- Elemento onde o Stripe.js montará o campo do cartão. -->
+                                <div id="card-element" class="form-input stripe-card-element"></div>
+                                <!-- Exibe erros de validação do cartão. -->
+                                <div id="card-errors" class="field-error" role="alert"></div>
+                            </div>
+                            
+                            <button type="submit" id="pay-btn" class="btn btn-primary">
+                                <span class="btn-text">Pagar</span>
+                                <span class="btn-loading hidden">
+                                    <span class="spinner"></span>
+                                    Processando...
+                                </span>
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- Histórico de pagamentos: Exibe uma lista dos pagamentos realizados pelo usuário. -->
+                    <div class="payment-history">
+                        <h3>Histórico de Pagamentos</h3>
+                        <div class="payment-status-info">
+                            Status: <span id="payment-status">Carregando...</span>
+                        </div>
+                        <ul id="payments-list" class="payments-list">
+                            <!-- Pagamentos serão carregados aqui via JavaScript -->
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Seção: Contato - Formulário para enviar mensagens de contato. -->
+            <section id="contact-section" class="dashboard-section">
+                <div class="section-content">
+                    <h2>📞 Contato</h2>
+                    <p>Envie uma mensagem para nossa equipe.</p>
+                    
+                    <form id="contact-form" class="dashboard-form">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="contact-name" class="form-label">Seu Nome</label>
+                                <input 
+                                    type="text" 
+                                    id="contact-name" 
+                                    name="name" 
+                                    class="form-input"
+                                    placeholder="Seu nome completo"
+                                    required
+                                >
+                            </div>
+                            <div class="form-group">
+                                <label for="contact-email" class="form-label">Seu Email</label>
+                                <input 
+                                    type="email" 
+                                    id="contact-email" 
+                                    name="email" 
+                                    class="form-input"
+                                    placeholder="seu@email.com"
+                                    required
+                                >
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="contact-phone" class="form-label">Telefone (Opcional)</label>
+                            <input 
+                                type="tel" 
+                                id="contact-phone" 
+                                name="phone" 
+                                class="form-input"
+                                placeholder="(XX) XXXXX-XXXX"
+                            >
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="contact-subject" class="form-label">Assunto</label>
+                            <input 
+                                type="text" 
+                                id="contact-subject" 
+                                name="subject" 
+                                class="form-input"
+                                placeholder="Assunto da mensagem"
+                                required
+                                maxlength="100"
+                            >
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="contact-message" class="form-label">Mensagem</label>
+                            <textarea 
+                                id="contact-message" 
+                                name="message" 
+                                class="form-textarea"
+                                placeholder="Digite sua mensagem aqui..."
+                                required
+                                rows="8"
+                                maxlength="2000"
+                            ></textarea>
+                        </div>
+                        
+                        <div class="form-actions">
+                            <button type="submit" id="send-contact-btn" class="btn btn-primary">
+                                <span class="btn-text">✉️ Enviar Mensagem</span>
+                                <span class="btn-loading hidden">
+                                    <span class="spinner"></span>
+                                    Enviando...
+                                </span>
+                            </button>
+                            <button type="button" class="btn btn-secondary" onclick="clearContactForm()">
+                                🗑️ Limpar
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </section>
+        </main>
+
+        <!-- Modal de Confirmação de Exclusão de Conta: Exibido ao tentar excluir a conta. -->
+        <div id="delete-account-modal" class="modal hidden">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Confirmar Exclusão de Conta</h3>
+                    <button class="modal-close" onclick="closeDeleteModal()">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <p>Tem certeza que deseja excluir sua conta? Esta ação é irreversível.</p>
+                    <p>Todos os seus dados serão permanentemente removidos.</p>
+                </div>
+                <div class="modal-footer">
+                    <button id="cancel-delete-btn" class="btn btn-secondary" onclick="closeDeleteModal()">
+                        Cancelar
+                    </button>
+                    <button id="confirm-delete-btn" class="btn btn-danger">
+                        Sim, Excluir Minha Conta
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts JavaScript: Carregados no final do body para otimizar o carregamento da página. -->
+    <script src="js/utils.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/dashboard.js"></script>
+</body>
+</html>

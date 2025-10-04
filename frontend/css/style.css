@@ -1,0 +1,1005 @@
+/**
+ * @file style.css
+ * @description Este arquivo contém os estilos CSS globais e principais para o projeto full-stack.
+ * Inclui resets, variáveis CSS, tipografia, layout, componentes reutilizáveis e responsividade.
+ * 
+ * @author Manus AI
+ * @date Oct 01, 2025
+ */
+
+/* ===================================================================
+   1. RESET CSS E CONFIGURAÇÕES BASE
+   =================================================================== */
+
+/**
+ * Reset básico para garantir consistência na renderização entre diferentes navegadores.
+ * Define `margin` e `padding` como 0 e `box-sizing` como `border-box` para todos os elementos.
+ */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/**
+ * Configurações globais para o elemento HTML e BODY.
+ * Define o tamanho da fonte base, comportamento de rolagem e estilos de texto/fundo.
+ */
+html {
+    font-size: 16px; /* Define o tamanho da fonte base para cálculos com `rem`. */
+    scroll-behavior: smooth; /* Habilita rolagem suave para âncoras. */
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Fonte padrão do sistema. */
+    line-height: 1.6; /* Espaçamento entre linhas para melhor legibilidade. */
+    color: var(--text-primary); /* Cor primária do texto, definida por variável CSS. */
+    background: var(--bg-primary); /* Cor de fundo primária, definida por variável CSS. */
+    min-height: 100vh; /* Garante que o body ocupe a altura total da viewport. */
+    overflow-x: hidden; /* Previne rolagem horizontal indesejada. */
+}
+
+/* ===================================================================
+   2. VARIÁVEIS CSS CUSTOMIZADAS
+   =================================================================== */
+
+/**
+ * Define variáveis CSS (custom properties) para cores, espaçamentos, fontes, etc.
+ * Isso facilita a manutenção e a criação de temas consistentes.
+ */
+:root {
+    /* Cores principais da paleta */
+    --primary-color: #667eea;
+    --primary-dark: #5a67d8;
+    --primary-light: #7c8ef7;
+    
+    --secondary-color: #764ba2;
+    --secondary-dark: #6b4190;
+    --secondary-light: #8b5ab8;
+    
+    /* Cores para indicar estados (sucesso, erro, aviso, informação) */
+    --success-color: #48bb78;
+    --success-light: #68d391;
+    --error-color: #f56565;
+    --error-light: #fc8181;
+    --warning-color: #ed8936;
+    --warning-light: #f6ad55;
+    --info-color: #4299e1;
+    --info-light: #63b3ed;
+    
+    /* Cores de texto para diferentes contextos */
+    --text-primary: #2d3748;
+    --text-secondary: #4a5568;
+    --text-muted: #718096;
+    --text-light: #a0aec0;
+    --text-white: #ffffff;
+    
+    /* Cores de fundo para diferentes seções e componentes */
+    --bg-primary: #ffffff;
+    --bg-secondary: #f7fafc;
+    --bg-tertiary: #edf2f7;
+    --bg-dark: #2d3748;
+    --bg-overlay: rgba(0, 0, 0, 0.5); /* Fundo para modais e overlays. */
+    
+    /* Cores de borda */
+    --border-color: #e2e8f0;
+    --border-dark: #cbd5e0;
+    --border-light: #f1f5f9;
+    
+    /* Sombras para elementos com elevação */
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
+    --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+    --shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.1);
+    
+    /* Raios de borda para cantos arredondados */
+    --radius-sm: 4px;
+    --radius-md: 8px;
+    --radius-lg: 12px;
+    --radius-xl: 16px;
+    --radius-full: 50%;
+    
+    /* Espaçamentos padronizados para consistência no layout */
+    --spacing-xs: 0.25rem;
+    --spacing-sm: 0.5rem;
+    --spacing-md: 1rem;
+    --spacing-lg: 1.5rem;
+    --spacing-xl: 2rem;
+    --spacing-2xl: 3rem;
+    --spacing-3xl: 4rem;
+    
+    /* Tamanhos de fonte padronizados */
+    --font-xs: 0.75rem;
+    --font-sm: 0.875rem;
+    --font-md: 1rem;
+    --font-lg: 1.125rem;
+    --font-xl: 1.25rem;
+    --font-2xl: 1.5rem;
+    --font-3xl: 1.875rem;
+    --font-4xl: 2.25rem;
+    
+    /* Duração e tipo de transições para elementos interativos */
+    --transition-fast: 0.15s ease-in-out;
+    --transition-normal: 0.3s ease-in-out;
+    --transition-slow: 0.5s ease-in-out;
+    
+    /* Z-index para controle de sobreposição de elementos */
+    --z-dropdown: 1000;
+    --z-sticky: 1020;
+    --z-fixed: 1030;
+    --z-modal: 1040;
+    --z-popover: 1050;
+    --z-tooltip: 1060;
+}
+
+/* ===================================================================
+   3. TIPOGRAFIA
+   =================================================================== */
+
+/**
+ * Estilos para títulos (h1 a h6).
+ * Define peso da fonte, altura da linha, margem inferior e cor.
+ */
+h1, h2, h3, h4, h5, h6 {
+    font-weight: 600;
+    line-height: 1.2;
+    margin-bottom: var(--spacing-md);
+    color: var(--text-primary);
+}
+
+/* Tamanhos específicos para cada nível de título. */
+h1 { font-size: var(--font-4xl); }
+h2 { font-size: var(--font-3xl); }
+h3 { font-size: var(--font-2xl); }
+h4 { font-size: var(--font-xl); }
+h5 { font-size: var(--font-lg); }
+h6 { font-size: var(--font-md); }
+
+/**
+ * Estilos para parágrafos.
+ * Define margem inferior e cor do texto.
+ */
+p {
+    margin-bottom: var(--spacing-md);
+    color: var(--text-secondary);
+}
+
+/**
+ * Estilos para links.
+ * Define cor, remove sublinhado e adiciona transição para o hover.
+ */
+a {
+    color: var(--primary-color);
+    text-decoration: none;
+    transition: color var(--transition-fast);
+}
+
+/**
+ * Estilos de hover para links.
+ * Altera a cor e adiciona sublinhado ao passar o mouse.
+ */
+a:hover {
+    color: var(--primary-dark);
+    text-decoration: underline;
+}
+
+/* ===================================================================
+   4. LAYOUT E CONTAINERS
+   =================================================================== */
+
+/**
+ * Container principal da aplicação.
+ * Centraliza o conteúdo, define largura máxima e espaçamento interno.
+ */
+.container {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: var(--spacing-md);
+}
+
+/**
+ * Cabeçalho da aplicação.
+ * Contém o logo e elementos de navegação, com espaçamento e borda inferior.
+ */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--spacing-lg) 0;
+    border-bottom: 1px solid var(--border-color);
+    margin-bottom: var(--spacing-2xl);
+}
+
+/**
+ * Estilos para o logo no cabeçalho.
+ * Utiliza gradiente de texto para o título principal.
+ */
+.logo h1 {
+    margin: 0;
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.logo p {
+    margin: 0;
+    font-size: var(--font-sm);
+    color: var(--text-muted);
+}
+
+/**
+ * Estilos para a navegação no cabeçalho.
+ */
+.header-nav {
+    display: flex;
+    gap: var(--spacing-md);
+}
+
+/**
+ * Conteúdo principal da página.
+ * Ocupa o espaço restante e organiza o conteúdo em coluna.
+ */
+.main-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-2xl);
+}
+
+/**
+ * Rodapé da aplicação.
+ * Contém informações de copyright e descrição, com borda superior e alinhamento central.
+ */
+.footer {
+    margin-top: var(--spacing-2xl);
+    padding: var(--spacing-lg) 0;
+    border-top: 1px solid var(--border-color);
+    text-align: center;
+    color: var(--text-muted);
+    font-size: var(--font-sm);
+}
+
+.footer p {
+    margin: var(--spacing-xs) 0;
+}
+
+/* ===================================================================
+   5. COMPONENTES - BOTÕES
+   =================================================================== */
+
+/**
+ * Estilos base para todos os botões.
+ * Define display, alinhamento, espaçamento, borda, raio, cursor e transições.
+ */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-md) var(--spacing-lg);
+    font-size: var(--font-md);
+    font-weight: 500;
+    text-decoration: none;
+    border: 2px solid transparent;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    position: relative;
+    overflow: hidden;
+    min-height: 44px; /* Garante área de toque mínima para acessibilidade. */
+}
+
+/**
+ * Estilos para botões desabilitados.
+ * Reduz a opacidade e altera o cursor para indicar que não são clicáveis.
+ */
+.btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+/**
+ * Variações de botões com diferentes estilos e cores.
+ */
+.btn-primary {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: var(--text-white);
+    border-color: transparent;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px); /* Efeito de leve elevação ao passar o mouse. */
+    box-shadow: var(--shadow-lg);
+    text-decoration: none;
+}
+
+.btn-secondary {
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+    border-color: var(--border-color);
+}
+
+.btn-secondary:hover {
+    background: var(--bg-tertiary);
+    border-color: var(--border-dark);
+    text-decoration: none;
+}
+
+.btn-outline {
+    background: transparent;
+    color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.btn-outline:hover {
+    background: var(--primary-color);
+    color: var(--text-white);
+    text-decoration: none;
+}
+
+.btn-danger {
+    background: var(--error-color);
+    color: var(--text-white);
+    border-color: transparent;
+}
+
+.btn-danger:hover {
+    background: var(--error-light);
+    transform: translateY(-2px);
+    text-decoration: none;
+}
+
+.btn-google {
+    background: var(--text-white);
+    color: var(--text-primary);
+    border-color: var(--border-color);
+    font-weight: 500;
+}
+
+.btn-google:hover {
+    background: var(--bg-secondary);
+    border-color: var(--border-dark);
+    text-decoration: none;
+}
+
+.google-icon {
+    width: 20px;
+    height: 20px;
+}
+
+/**
+ * Tamanhos de botões.
+ */
+.btn-small {
+    padding: var(--spacing-sm) var(--spacing-md);
+    font-size: var(--font-sm);
+    min-height: 36px;
+}
+
+.btn-large {
+    padding: var(--spacing-lg) var(--spacing-xl);
+    font-size: var(--font-lg);
+    min-height: 52px;
+}
+
+/**
+ * Estilos para o estado de carregamento dos botões.
+ * Oculta o texto normal e exibe um spinner.
+ */
+.btn-loading .btn-text {
+    opacity: 0;
+}
+
+.btn-loading .btn-loading {
+    display: flex !important;
+}
+
+/* ===================================================================
+   6. COMPONENTES - FORMULÁRIOS
+   =================================================================== */
+
+/**
+ * Estilos base para formulários de autenticação e dashboard.
+ * Organiza os elementos em coluna com espaçamento.
+ */
+.auth-form,
+.dashboard-form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-lg);
+}
+
+/**
+ * Grupo de formulário: label + input/textarea.
+ */
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+}
+
+/**
+ * Linha de formulário: para organizar campos lado a lado (grid).
+ */
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-lg);
+}
+
+/**
+ * Estilos para labels de formulário.
+ */
+.form-label {
+    font-weight: 500;
+    color: var(--text-primary);
+    font-size: var(--font-sm);
+}
+
+/**
+ * Estilos para campos de input e textarea.
+ * Define padding, borda, raio, tamanho da fonte e transições.
+ */
+.form-input,
+.form-textarea {
+    padding: var(--spacing-md);
+    border: 2px solid var(--border-color);
+    border-radius: var(--radius-md);
+    font-size: var(--font-md);
+    transition: all var(--transition-fast);
+    background: var(--bg-primary);
+}
+
+/**
+ * Estilos para campos de input e textarea em foco.
+ * Adiciona borda colorida e sombra para indicar o foco.
+ */
+.form-input:focus,
+.form-textarea:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+/**
+ * Estilos para placeholders de input e textarea.
+ */
+.form-input::placeholder,
+.form-textarea::placeholder {
+    color: var(--text-light);
+}
+
+/**
+ * Estilos específicos para textarea.
+ * Permite redimensionamento vertical e define altura mínima.
+ */
+.form-textarea {
+    resize: vertical;
+    min-height: 120px;
+}
+
+/**
+ * Container para campos de senha com um botão para mostrar/ocultar a senha.
+ */
+.password-input-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+/**
+ * Botão para alternar a visibilidade da senha.
+ */
+.password-toggle {
+    position: absolute;
+    right: var(--spacing-md);
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: var(--font-lg);
+    padding: var(--spacing-xs);
+    border-radius: var(--radius-sm);
+    transition: background var(--transition-fast);
+}
+
+.password-toggle:hover {
+    background: var(--bg-secondary);
+}
+
+/**
+ * Indicador visual da força da senha.
+ */
+.password-strength {
+    margin-top: var(--spacing-sm);
+}
+
+.strength-bar {
+    height: 4px;
+    background: var(--bg-tertiary);
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+}
+
+.strength-fill {
+    height: 100%;
+    transition: all var(--transition-normal);
+    border-radius: var(--radius-sm);
+}
+
+/**
+ * Classes para colorir a barra de força da senha de acordo com o nível.
+ */
+.strength-weak .strength-fill {
+    width: 25%;
+    background: var(--error-color);
+}
+
+.strength-fair .strength-fill {
+    width: 50%;
+    background: var(--warning-color);
+}
+
+.strength-good .strength-fill {
+    width: 75%;
+    background: var(--info-color);
+}
+
+.strength-strong .strength-fill {
+    width: 100%;
+    background: var(--success-color);
+}
+
+.strength-text {
+    font-size: var(--font-xs);
+    margin-top: var(--spacing-xs);
+    font-weight: 500;
+}
+
+/**
+ * Mensagens de erro para campos de formulário.
+ */
+.field-error {
+    color: var(--error-color);
+    font-size: var(--font-sm);
+    margin-top: var(--spacing-xs);
+    display: none; /* Oculto por padrão, exibido via JS. */
+}
+
+.field-help {
+    color: var(--text-muted);
+    font-size: var(--font-xs);
+    margin-top: var(--spacing-xs);
+}
+
+/**
+ * Checkbox customizado.
+ */
+.checkbox-container {
+    display: block;
+    position: relative;
+    padding-left: 25px;
+    margin-bottom: var(--spacing-sm);
+    cursor: pointer;
+    font-size: var(--font-md);
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.checkbox-container input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+.checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 20px;
+    width: 20px;
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+}
+
+.checkbox-container:hover input ~ .checkmark {
+    background-color: var(--bg-tertiary);
+}
+
+.checkbox-container input:checked ~ .checkmark {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+}
+
+.checkbox-container input:checked ~ .checkmark:after {
+    display: block;
+}
+
+.checkbox-container .checkmark:after {
+    left: 7px;
+    top: 3px;
+    width: 5px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 3px 3px 0;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+}
+
+/* ===================================================================
+   7. COMPONENTES - CARDS E SEÇÕES
+   =================================================================== */
+
+/**
+ * Card de autenticação (login/cadastro).
+ */
+.auth-card {
+    background: var(--bg-primary);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+    padding: var(--spacing-2xl);
+    max-width: 450px;
+    width: 100%;
+    margin: var(--spacing-xl) auto;
+    text-align: center;
+}
+
+.auth-header {
+    margin-bottom: var(--spacing-xl);
+}
+
+.auth-header h2 {
+    margin-bottom: var(--spacing-sm);
+    color: var(--primary-color);
+}
+
+.auth-header p {
+    color: var(--text-muted);
+    font-size: var(--font-md);
+}
+
+.auth-footer {
+    margin-top: var(--spacing-xl);
+    font-size: var(--font-sm);
+    color: var(--text-secondary);
+}
+
+.auth-link {
+    font-weight: 500;
+}
+
+/**
+ * Divisor visual.
+ */
+.divider {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    margin: var(--spacing-xl) 0;
+    color: var(--text-light);
+}
+
+.divider::before,
+.divider::after {
+    content: '';
+    flex: 1;
+    border-bottom: 1px solid var(--border-light);
+}
+
+.divider:not(:empty)::before {
+    margin-right: var(--spacing-md);
+}
+
+.divider:not(:empty)::after {
+    margin-left: var(--spacing-md);
+}
+
+/**
+ * Seção de informações/features.
+ */
+.info-section {
+    background: var(--bg-secondary);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-2xl);
+    margin: var(--spacing-xl) auto;
+    max-width: 800px;
+    width: 100%;
+    text-align: center;
+}
+
+.info-section h3 {
+    color: var(--secondary-color);
+    margin-bottom: var(--spacing-xl);
+}
+
+.features-grid,
+.benefits-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: var(--spacing-lg);
+    text-align: left;
+}
+
+.feature-item,
+.benefit-item {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--spacing-md);
+    background: var(--bg-primary);
+    padding: var(--spacing-lg);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-sm);
+}
+
+.feature-icon,
+.benefit-icon {
+    font-size: var(--font-2xl);
+    color: var(--primary-color);
+    flex-shrink: 0;
+}
+
+.feature-item h4,
+.benefit-item h4 {
+    margin-top: 0;
+    margin-bottom: var(--spacing-xs);
+    color: var(--text-primary);
+}
+
+.feature-item p,
+.benefit-item p {
+    margin-bottom: 0;
+    font-size: var(--font-sm);
+    color: var(--text-secondary);
+}
+
+/* ===================================================================
+   8. COMPONENTES - MODAIS
+   =================================================================== */
+
+/**
+ * Overlay do modal.
+ */
+.modal {
+    position: fixed;
+    z-index: var(--z-modal);
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--bg-overlay);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity var(--transition-normal), visibility var(--transition-normal);
+}
+
+.modal.visible {
+    opacity: 1;
+    visibility: visible;
+}
+
+/**
+ * Conteúdo do modal.
+ */
+.modal-content {
+    background-color: var(--bg-primary);
+    margin: auto;
+    padding: var(--spacing-xl);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-xl);
+    width: 90%;
+    max-width: 600px;
+    position: relative;
+    transform: translateY(-20px);
+    transition: transform var(--transition-normal);
+}
+
+.modal.visible .modal-content {
+    transform: translateY(0);
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border-light);
+    padding-bottom: var(--spacing-md);
+    margin-bottom: var(--spacing-md);
+}
+
+.modal-header h3 {
+    margin: 0;
+    color: var(--primary-color);
+}
+
+.modal-close {
+    color: var(--text-muted);
+    font-size: var(--font-2xl);
+    font-weight: bold;
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: 0;
+    transition: color var(--transition-fast);
+}
+
+.modal-close:hover,
+.modal-close:focus {
+    color: var(--text-primary);
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.modal-body {
+    padding: var(--spacing-md) 0;
+    max-height: 70vh;
+    overflow-y: auto;
+}
+
+.modal-body h4 {
+    color: var(--text-primary);
+    margin-top: var(--spacing-lg);
+    margin-bottom: var(--spacing-sm);
+}
+
+.modal-body p {
+    font-size: var(--font-sm);
+    line-height: 1.5;
+    color: var(--text-secondary);
+}
+
+.modal-footer {
+    border-top: 1px solid var(--border-light);
+    padding-top: var(--spacing-md);
+    margin-top: var(--spacing-md);
+    text-align: right;
+}
+
+.example-credentials {
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: var(--spacing-md);
+    margin-top: var(--spacing-md);
+    text-align: left;
+}
+
+.example-credentials p {
+    margin: var(--spacing-xs) 0;
+    font-size: var(--font-sm);
+}
+
+.example-credentials strong {
+    color: var(--text-primary);
+}
+
+/* ===================================================================
+   9. UTilitários
+   =================================================================== */
+
+/**
+ * Classes utilitárias para mostrar/esconder elementos.
+ */
+.hidden {
+    display: none !important;
+}
+
+.visible {
+    display: block !important;
+}
+
+/**
+ * Mensagens de feedback (sucesso, erro, info).
+ */
+.message-area {
+    padding: var(--spacing-md);
+    border-radius: var(--radius-md);
+    margin-bottom: var(--spacing-lg);
+    font-weight: 500;
+    text-align: left;
+}
+
+.message-area.success {
+    background-color: var(--success-light);
+    color: var(--success-color);
+    border: 1px solid var(--success-color);
+}
+
+.message-area.error {
+    background-color: var(--error-light);
+    color: var(--error-color);
+    border: 1px solid var(--error-color);
+}
+
+.message-area.info {
+    background-color: var(--info-light);
+    color: var(--info-color);
+    border: 1px solid var(--info-color);
+}
+
+/* ===================================================================
+   10. RESPONSIVIDADE
+   =================================================================== */
+
+/**
+ * Media queries para adaptar o layout a diferentes tamanhos de tela.
+ */
+@media (max-width: 768px) {
+    .container {
+        padding: var(--spacing-sm);
+    }
+
+    .header {
+        flex-direction: column;
+        gap: var(--spacing-md);
+        text-align: center;
+    }
+
+    .header-nav {
+        justify-content: center;
+    }
+
+    .auth-card {
+        padding: var(--spacing-lg);
+        margin: var(--spacing-lg) auto;
+    }
+
+    .form-row {
+        grid-template-columns: 1fr; /* Empilha campos em telas menores. */
+    }
+
+    .info-section {
+        padding: var(--spacing-lg);
+        margin: var(--spacing-lg) auto;
+    }
+
+    .features-grid,
+    .benefits-list {
+        grid-template-columns: 1fr; /* Empilha features em telas menores. */
+    }
+
+    h1 { font-size: var(--font-3xl); }
+    h2 { font-size: var(--font-2xl); }
+    h3 { font-size: var(--font-xl); }
+}
+
+@media (max-width: 480px) {
+    .btn {
+        width: 100%; /* Botões ocupam largura total em telas muito pequenas. */
+    }
+
+    .auth-card {
+        border-radius: 0; /* Remove borda arredondada em telas muito pequenas. */
+        box-shadow: none;
+    }
+
+    .modal-content {
+        width: 100%;
+        height: 100%;
+        max-width: none;
+        border-radius: 0;
+        padding: var(--spacing-md);
+    }
+
+    .modal-body {
+        max-height: none;
+    }
+}

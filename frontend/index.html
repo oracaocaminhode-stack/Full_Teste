@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Sistema Full-Stack</title>
+    
+    <!-- CSS Principal: Contém estilos globais e de layout para a aplicação. -->
+    <link rel="stylesheet" href="css/style.css">
+    
+    <!-- Favicon: Ícone exibido na aba do navegador. -->
+    <link rel="icon" type="image/x-icon" href="images/favicon.ico">
+    
+    <!-- Meta tags para SEO e descrição da página. -->
+    <meta name="description" content="Sistema de autenticação completo com login tradicional e Google OAuth">
+    <meta name="keywords" content="login, autenticação, sistema, fullstack">
+    <meta name="author" content="Desenvolvedor Full-Stack">
+</head>
+<body>
+    <!-- Container principal da página: Envolve todo o conteúdo da aplicação. -->
+    <div class="container">
+        <!-- Cabeçalho da aplicação: Contém o logo e o título do sistema. -->
+        <header class="header">
+            <div class="logo">
+                <h1>🚀 Sistema Full-Stack</h1>
+                <p>Projeto didático completo</p>
+            </div>
+        </header>
+
+        <!-- Conteúdo principal: Área onde o conteúdo dinâmico da página é exibido. -->
+        <main class="main-content">
+            <!-- Card de login: Contém o formulário de login e opções relacionadas. -->
+            <div class="auth-card">
+                <!-- Título do formulário de autenticação. -->
+                <div class="auth-header">
+                    <h2>Entrar na sua conta</h2>
+                    <p>Faça login para acessar o sistema</p>
+                </div>
+
+                <!-- Área de mensagens: Exibe mensagens de sucesso ou erro para o usuário. -->
+                <div id="message-area" class="message-area hidden">
+                    <div id="message-content" class="message-content"></div>
+                </div>
+
+                <!-- Formulário de login: Coleta as credenciais do usuário. -->
+                <form id="login-form" class="auth-form">
+                    <!-- Campo de email. -->
+                    <div class="form-group">
+                        <label for="email" class="form-label">
+                            📧 Email
+                        </label>
+                        <input 
+                            type="email" 
+                            id="email" 
+                            name="email" 
+                            class="form-input" 
+                            placeholder="seu@email.com"
+                            required
+                            autocomplete="email"
+                        >
+                        <!-- Exibe mensagens de erro específicas para o campo de email. -->
+                        <div class="field-error" id="email-error"></div>
+                    </div>
+
+                    <!-- Campo de senha. -->
+                    <div class="form-group">
+                        <label for="password" class="form-label">
+                            🔒 Senha
+                        </label>
+                        <!-- Container para o campo de senha e o botão de alternar visibilidade. -->
+                        <div class="password-input-container">
+                            <input 
+                                type="password" 
+                                id="password" 
+                                name="password" 
+                                class="form-input" 
+                                placeholder="Sua senha"
+                                required
+                                autocomplete="current-password"
+                            >
+                            <!-- Botão para mostrar/ocultar a senha. -->
+                            <button 
+                                type="button" 
+                                id="toggle-password" 
+                                class="password-toggle"
+                                aria-label="Mostrar/ocultar senha"
+                            >
+                                👁️
+                            </button>
+                        </div>
+                        <!-- Exibe mensagens de erro específicas para o campo de senha. -->
+                        <div class="field-error" id="password-error"></div>
+                    </div>
+
+                    <!-- Opções adicionais do formulário, como "Lembrar de mim" e "Esqueceu a senha?". -->
+                    <div class="form-options">
+                        <label class="checkbox-container">
+                            <input type="checkbox" id="remember-me" name="remember">
+                            <span class="checkmark"></span>
+                            Lembrar de mim
+                        </label>
+                        
+                        <a href="#" class="forgot-password" onclick="showForgotPassword()">
+                            Esqueceu a senha?
+                        </a>
+                    </div>
+
+                    <!-- Botão de login: Aciona a submissão do formulário. -->
+                    <button type="submit" id="login-btn" class="btn btn-primary">
+                        <span class="btn-text">Entrar</span>
+                        <!-- Indicador de carregamento para o botão de login. -->
+                        <span class="btn-loading hidden">
+                            <span class="spinner"></span>
+                            Entrando...
+                        </span>
+                    </button>
+                </form>
+
+                <!-- Divisor visual entre o login tradicional e o login social. -->
+                <div class="divider">
+                    <span>ou</span>
+                </div>
+
+                <!-- Botão de login com Google: Inicia o fluxo de autenticação Google OAuth. -->
+                <button id="google-login-btn" class="btn btn-google">
+                    <img src="https://developers.google.com/identity/images/g-logo.png" alt="Google" class="google-icon">
+                    Entrar com Google
+                </button>
+
+                <!-- Link para a página de cadastro, caso o usuário não tenha uma conta. -->
+                <div class="auth-footer">
+                    <p>Não tem uma conta? 
+                        <a href="register.html" class="auth-link">Cadastre-se aqui</a>
+                    </p>
+                </div>
+            </div>
+
+            <!-- Seção de informações sobre o sistema: Destaca as funcionalidades principais. -->
+            <div class="info-section">
+                <h3>🎯 Sobre este sistema</h3>
+                <div class="features-grid">
+                    <!-- Feature: Autenticação Segura -->
+                    <div class="feature-item">
+                        <span class="feature-icon">🔐</span>
+                        <div>
+                            <h4>Autenticação Segura</h4>
+                            <p>Login com email/senha e Google OAuth</p>
+                        </div>
+                    </div>
+                    <!-- Feature: Envio de Emails -->
+                    <div class="feature-item">
+                        <span class="feature-icon">📧</span>
+                        <div>
+                            <h4>Envio de Emails</h4>
+                            <p>Sistema de contato integrado</p>
+                        </div>
+                    </div>
+                    <!-- Feature: Pagamentos Stripe -->
+                    <div class="feature-item">
+                        <span class="feature-icon">💳</span>
+                        <div>
+                            <h4>Pagamentos Stripe</h4>
+                            <p>Processamento seguro de pagamentos</p>
+                        </div>
+                    </div>
+                    <!-- Feature: Design Responsivo -->
+                    <div class="feature-item">
+                        <span class="feature-icon">📱</span>
+                        <div>
+                            <h4>Design Responsivo</h4>
+                            <p>Funciona em todos os dispositivos</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Rodapé da página: Contém informações de copyright e descrição do projeto. -->
+        <footer class="footer">
+            <p>&copy; 2024 Sistema Full-Stack - Projeto Didático</p>
+            <p>Desenvolvido para aprendizado de implantação frontend + backend</p>
+        </footer>
+    </div>
+
+    <!-- Modal de "Esqueceu a senha": Exibe informações sobre recuperação de senha (simulado). -->
+    <div id="forgot-password-modal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Recuperar Senha</h3>
+                <button class="modal-close" onclick="closeForgotPassword()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>Em um sistema real, aqui você enviaria um email para recuperação de senha.</p>
+                <p>Para este projeto didático, use as credenciais de exemplo:</p>
+                <div class="example-credentials">
+                    <p><strong>Email:</strong> admin@exemplo.com</p>
+                    <p><strong>Senha:</strong> admin123</p>
+                    <hr>
+                    <p><strong>Email:</strong> teste@exemplo.com</p>
+                    <p><strong>Senha:</strong> teste123</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeForgotPassword()">
+                    Fechar
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts JavaScript: Carregados no final do body para otimizar o carregamento da página. -->
+    <script src="js/utils.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/login.js"></script>
+</body>
+</html>
